@@ -24,7 +24,7 @@ function bsearch_1(arr, x) {
 
 function bsearch_2(arr, x) {
   let l = 0
-  let r = arr.length
+  let r = arr.length - 1
   let guess
   while (l <= r) {
     guess = Math.floor((r + l) / 2)
