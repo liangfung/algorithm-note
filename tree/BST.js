@@ -98,6 +98,43 @@ class BST {
       if(n.right) q.enQueue(n.right)
     }
   }
+
+  /**
+   * 获取最大值
+   */
+  getMax() {
+    return this._getMax(this.root)
+  }
+  _getMax(node) {
+    if(!node.right) return node
+    return this._getMax(node.right)
+  }
+
+  /**
+   * 获取最小值
+   */
+  getMin() {
+    return this._getMin(this.root)
+  }
+  _getMin(node) {
+    if(!node.left) return node
+    return this._getMin(node.left)
+  }
+
+  /**
+   * 获取树的深度
+   */
+  getDepth() {
+    return this._getDepth(this.root)
+  }
+  _getDepth(node) {
+    if(node && (node.left || node.right)){
+      let left = this._getDepth(node.left)
+      let right = this._getDepth(node.right)
+      return left > right ? left + 1 : right + 1
+    }
+    return 0
+  }
 }
 
 var bst = new BST()
@@ -107,9 +144,11 @@ bst.addChild(11)
 bst.addChild(7)
 bst.addChild(20)
 bst.addChild(2)
+bst.addChild(33)
 
-console.log(bst.show(), bst.getSize())
-bst.breadthOrder()
+// console.log(bst.show())
+console.log(bst.getDepth())
+// bst.breadthOrder()
 
 /**
  * 树的遍历
