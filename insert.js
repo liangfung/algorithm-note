@@ -20,13 +20,12 @@ function insert(arr, x) {
 // console.log(insert([1, 2, 5,8], 9))
 
 function insert_sort(arr) {
-  arr = [...arr]
   const _insert = (A, i, x) => {
     // A和i构成了一个有序数组
     // x为待插入的元素
     // i为待插入元素的index
     let p = i - 1
-    while (A[p] > x) {
+    while (p >= 0 && A[p] > x) {
       A[p + 1] = A[p]
       p--
     }
@@ -35,7 +34,10 @@ function insert_sort(arr) {
   for (let i = 1; i < arr.length; i++) {
     _insert(arr, i, arr[i])
   }
-  return arr
 }
 
-console.log(insert_sort([3, 6, 1, 3, 8, 9, 0, 22]))
+const A = [3, 6, 1, 3, 8, 9, 0, 22]
+insert_sort(A)
+console.log(A)
+
+module.exports = insert_sort
