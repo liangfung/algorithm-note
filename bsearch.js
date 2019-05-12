@@ -1,5 +1,6 @@
 /**
- *  二分查找（有序数组）
+ * 二分查找（有序数组）
+ * 递归算法
  * @param {Array} arr 
  * @param {number} x 
  */
@@ -22,7 +23,22 @@ function bsearch_1(arr, x) {
   return find()
 }
 
-function bsearch_2(arr, x) {
+/**
+ * 递归算法优化
+ */
+function bsearch_2(A, x, l = 0, r = A.length - 1) {
+  let g = Math.floor((l + r) / 2)
+  if (l > r) return -1
+  if (A[g] === x) return g
+  return A[g] < x
+    ? bsearch_2(A, x, g + 1, r)
+    : bsearch_2(A, x, l, r - 1)
+}
+
+/**
+ * while算法
+ */
+function bsearch_3(arr, x) {
   let l = 0
   let r = arr.length - 1
   let guess
@@ -42,3 +58,4 @@ function bsearch_2(arr, x) {
 var arr = [1, 2, 5, 23, 43, 45, 55, 78, 98, 100]
 console.log(bsearch_1(arr, 98))
 console.log(bsearch_2(arr, 98))
+console.log(bsearch_3(arr, 98))
