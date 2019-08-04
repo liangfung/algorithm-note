@@ -1,5 +1,6 @@
 /**
  * 索引最大堆
+ * 
  */
 class IndexMaxHeap {
 
@@ -7,10 +8,15 @@ class IndexMaxHeap {
     this.maxLen = k
     // 数据容器
     this.heapContainer = []
-    // 数据索引
+
+    // 数据索引，真正操作的堆，（不操作数据源，操作index，性能消耗小）
     this.indexs = []
-    // 反向索引，存储数据索引在indexs中的位置（索引）
-    this.rev = []
+
+    // 反向索引 reverse，存储数据索引在indexs中的位置（索引）
+    this.rev = Array.from(this.maxLen).fill(-1)
+
+    // 注意规律： indexs[i] = j;  rev[j] = i
+    // --->  rev[indexs[i]] = i
   }
 
   size() {
@@ -44,9 +50,12 @@ class IndexMaxHeap {
   }
 
   swap(index_1, index_2) {
+    // indexs中元素互换位置
     [this.indexs[index_1], this.indexs[index_2]] = [this.indexs[index_2], this.indexs[index_1]]
 
-
+    // 相应的更改rev中的值
+    this.rev[this.indexs[index_1]] = index_1
+    this.rev[this.indexs[index_2]] = index_2
   }
 
   shiftDown(index) {
@@ -76,13 +85,18 @@ class IndexMaxHeap {
     let index = this.size()  // 新加上的元素
     this.heapContainer.push(item)
     this.indexs.push(index)
+    // 怎么更改rev的值呢
+    this.rev.push(index)
     this.shiftUp(index)
   }
 
   dequeue() {
     let result = this.heapContainer[this.indexs[0]]
     if (this.size() > 1) {
-      this.indexs[0] = this.indexs.pop()
+      let maxIndex = this.indexs[0]
+      let i = this.indexs[0] = this.indexs.pop()
+      this.rev[maxIndex] = -1
+      this.rev[i] = 0
       this.shiftDown(0)
     } else {
       this.indexs = []
@@ -91,38 +105,47 @@ class IndexMaxHeap {
   }
 
   print() {
-    for(let index of this.indexs) {
-      console.log(this.heapContainer[index])
-    }
+    console.log(this.indexs)
+    console.log(this.rev)
+    console.log(this.heapContainer)
   }
 
   remove(index) {
     let item = this.heapContainer[index]
-    let itemIndex = -1
+    // let itemIndex = -1
     let result
     // 用了for循环，复杂度为 O(n)
-    for(let i = 0; i < this.indexs.length; i++) {
-      if(this.indexs[i] === index) {
-        itemIndex = i
-        break
-      }
-    }
-    if(itemIndex > -1 && itemIndex !== this.size() - 1) {
+    // for (let i = 0; i < this.indexs.length; i++) {
+    //   if (this.indexs[i] === index) {
+    //     itemIndex = i
+    //     break
+    //   }
+    // }
+
+    let idxOfIndexs = this.rev[index]  // 数据的索引在indexs中的索引
+
+    if (idxOfIndexs > -1 && idxOfIndexs !== this.size() - 1) {
+      // this.rev[this.indexs[idxOfIndexs]] = -1  
+      this.rev[index] = -1  // 相当于在indexs中删掉
       let lastIndexItem = this.indexs.pop()
+
+      console.log(idxOfIndexs, lastIndexItem)
       // 把最后一个塞进去，up and down
-      this.indexs[itemIndex] = lastIndexItem
-      this.shiftDown(itemIndex)
-      this.shiftUp(itemIndex)
+      this.indexs[idxOfIndexs] = lastIndexItem
+      // 相应的修改rev
+      this.rev[lastIndexItem] = idxOfIndexs
+      this.shiftDown(idxOfIndexs)
+      this.shiftUp(idxOfIndexs)
       result = item
     }
 
     return result
   }
-  
+
 }
 
 let a = new IndexMaxHeap(10)
-a.add(1)
+
 a.add(50)
 a.add(5)
 a.add(90)
@@ -130,9 +153,10 @@ a.add(89)
 a.add(32)
 a.add(33)
 a.add(4)
+a.remove(2)
 
-a.remove(7)
-a.remove(1)
+// a.remove(7)
+// a.remove(1)
 a.print()
 // while(a.size() > 0) {
 //   console.log(a.dequeue())
