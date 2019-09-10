@@ -1,9 +1,10 @@
-import Queue from '../queue'
+// import Queue from '../queue'
+const Queue = require('../queue')
 
 class Node {
-  constructor() {
-    this.key = null
-    this.value = null
+  constructor(value) {
+    // this.key = null
+    this.value = value
     this.right = null
     this.left = null
   }
@@ -26,21 +27,22 @@ class BST {
   _insert(node, value) {
     if (node === null) {
       node = new Node(value)
-      this.size++
+      this.count++
     }
     else if (node.value < value) {
-      this._insert(node.right, value)
+      node.right = this._insert(node.right, value)
     }
     else if (node.value > value) {
-      this._insert(node.left, value)
+      node.left = this._insert(node.left, value)
     }
     else {
       node.value = value
     }
+    return node
   }
 
   insert(value) {
-    this._insert(this.root, value)
+    this.root = this._insert(this.root, value)
   }
 
   contain(value) {
@@ -134,4 +136,30 @@ class BST {
     }
   }
 
+  minium() {
+    let node = this._minium(this.root)
+    return node ? node.value : null
+  }
+
+  _minium(node) {
+    if (node && node.left) {
+      return this._minium(node.left)
+    }
+    return node
+  }
+
 }
+
+let b = new BST()
+
+b.insert(23)
+b.insert(50)
+b.insert(9)
+b.insert(3)
+b.insert(2)
+b.insert(33)
+b.insert(31)
+
+// console.log(b)
+// console.log(b.size())
+console.log(b.minium())
