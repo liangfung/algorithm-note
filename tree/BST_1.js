@@ -148,6 +148,21 @@ class BST {
     return node
   }
 
+
+
+  maxium() {
+    let node = this._maxium(this.root)
+    return node ? node.value : null
+  }
+
+  _maxium(node) {
+    if(!node) return null
+    if(node.right) {
+      return this._maxium(node.right)
+    }
+    return node
+  }
+
 }
 
 let b = new BST()
@@ -159,7 +174,9 @@ b.insert(3)
 b.insert(2)
 b.insert(33)
 b.insert(31)
+b.insert(66)
 
 // console.log(b)
 // console.log(b.size())
 console.log(b.minium())
+console.log(b.maxium())
