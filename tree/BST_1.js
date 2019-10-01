@@ -156,11 +156,62 @@ class BST {
   }
 
   _maxium(node) {
-    if(!node) return null
-    if(node.right) {
+    if (!node) return null
+    if (node.right) {
       return this._maxium(node.right)
     }
     return node
+  }
+
+  removeMax() {
+    this.root = this._removeMax(this.root)
+  }
+  _removeMax(node) {
+    if (!node) return null
+    if (node.right) {
+      node.right = this._removeMax(node.right)
+    } else {
+      node = node.left
+      this.count--
+    }
+    return node
+  }
+
+  remove(value) {
+    this.root = this._remove(this.root, value)
+  }
+
+  _remove(node, value) {
+    if (!node) return null
+    if (node.value < value) {
+      node.right = this._remove(node.right, value)
+      return node
+    }
+    if (node.value > value) {
+      node.left = this._remove(node.left, value)
+      return node
+    }
+
+    let right = node.right
+    let left = node.left
+    if (right === null) {
+      node = node.left
+    } else if (left === null) {
+      node = node.right
+    } else {
+      let s = this._maxium(node.left)
+      // 删除s
+      s.left = this._removeMax(left)
+      s.right = right
+      this.count--
+      return s
+    }
+
+    return node
+  }
+
+  print() {
+    console.log(this.root)
   }
 
 }
@@ -171,12 +222,15 @@ b.insert(23)
 b.insert(50)
 b.insert(9)
 b.insert(3)
-b.insert(2)
 b.insert(33)
 b.insert(31)
-b.insert(66)
-
+// b.insert(60)
+// b.insert(63)
+// b.insert(66)
+// b.removeMax()
+b.remove(50)
 // console.log(b)
 // console.log(b.size())
-console.log(b.minium())
-console.log(b.maxium())
+// console.log(b.minium())
+// console.log(b.maxium())
+b.print()
