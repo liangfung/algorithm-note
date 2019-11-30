@@ -10,6 +10,13 @@ function merge(A, p, q, r) {
   }
 }
 
+
+/**
+ * 原地合并排序
+ * @param {array} A 
+ * @param {number} p 
+ * @param {number} r 
+ */
 function mergeSort(A, p, r) {
   if (r - p < 2) return A;
   let q = Math.ceil((p + r) / 2)
